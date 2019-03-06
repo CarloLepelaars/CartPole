@@ -63,9 +63,15 @@ class Cartpole_Agent():
 
         # Save training data as a NumPy array
         training_data_save = np.array(training_data)
-        np.save('saved.npy',training_data_save)
+        np.save('population.npy',training_data_save)
 
         return training_data
+
+    def load_data(self, path):
+        '''
+        Loads the training data for training the model
+        '''
+        return np.load(path)
 
     @staticmethod
     def neural_network_model(input_size, lr):
@@ -153,7 +159,14 @@ class Cartpole_Agent():
 
 # Train and evaluate Cartpole Agent
 if __name__ == "__main__":
+    # Create agent
     agent = Cartpole_Agent('CartPole-v1')
+
+    # In case you have no training data yet
     training_data = agent.initial_population()
+
+    # In case you already collect training data
+    #training_data = agent.load_data('data/population.npy')
+
     model = agent.train_model(training_data)
-    agent.evaluate(iterations=10, model=model)
+    agent.evaluate(iterations=3, model=model)
